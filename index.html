@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Better-Me</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/toastify.min.css">
+
+  <script defer src="main.js"></script>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="/" data-link data-hidden data-i18n="home">Home</a>
+      <a href="/add-todo" data-link data-auth data-i18n="todos">Add Todo</a>
+      <a href="/add-note" data-link data-auth data-i18n="notes">Add Note</a>
+      <a href="/habits" data-link data-auth data-i18n="habits">Habits</a>
+      <a href="/profile" data-link data-auth data-i18n="profile">Profile</a>
+      <a href="/user-management" data-link data-login data-i18n="register" data-hidden>Register</a>
+      <a href="/logout" data-link data-logout style="display: none;" data-i18n="logout">Logout</a>
+    </nav>
+
+
+    <span id="currentUser">No user logged in</span>
+
+    <span>
+      <button id="logoutButton" data-logout style="display:none;">Logout</button>
+    </span>
+    
+
+    <select id="languageSelector">
+      <option value="en">  <img class="icon"  src="./img/us.png" alt="us flag">  English</option>
+      <option value="es">	<img  class="icon"src="./img/mx.png" alt=" mexican flag" >   Español</option>
+      <option value="fr"> 	<img  class="icon"src="./img/fr.png" alt="french flag" >  Français</option>
+    </select>
+
+    <!-- <div class="custom-dropdown">
+      <div class="selected-item">
+        <img class="icon" src="./img/us.png" alt="us flag"> English
+      </div>
+      <ul class="dropdown-menu">
+        <li data-value="en">
+          <img class="icon" src="./img/us.png" alt="us flag"> English
+        </li>
+        <li data-value="es">
+          <img class="icon" src="./img/mx.png" alt="mexican flag"> Español
+        </li>
+        <li data-value="fr">
+          <img class="icon" src="./img/fr.png" alt="french flag"> Français
+        </li>
+      </ul>
+    </div> -->
+
+
+  </header>
+
+  <main id="main-content">
+    <!-- Dynamic content will be loaded here -->
+  </main>
+
+  <script src="./js/toastify.min.js"></script>
+  <script src="./js/dexie.min.js"></script>
+  <script src="./js/main.js"></script>
+
+
+</body>
+
+</html>

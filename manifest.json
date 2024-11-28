@@ -1,0 +1,12 @@
+{
+  "name": "PWABetter-me",
+  "short_name": "Better-me",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fdfdfd",
+  "theme_color": "#db4938",
+  "description": "An app to help you improve yourself!",
+  "orientation": "portrait-primary"
+ 
+}

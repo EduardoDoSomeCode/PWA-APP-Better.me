@@ -1,0 +1,292 @@
+/* styles.css */
+:root {
+  --primary-color: #dddddd;
+  --secondary-color: #0a0714;
+  --tertiary-color: #1b1920;
+  --accent--color: #3d1323;
+  --gray-color: #808080;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--tertiary-color);
+  color: var(--primary-color);
+}
+
+#currentUser {
+  padding: 0.5rem;
+}
+header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+nav a {
+  text-decoration: none;
+  padding: 8px 16px;
+  color: var(--primary-color);
+}
+
+nav a.active {
+  background: #007bff;
+  border-radius: 4px;
+  transition: background 200ms ease;
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+#main-content {
+  margin: 1rem;
+}
+
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input,
+textarea,
+button {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 200ms ease;
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 5px;
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+li button,
+.delete-btn {
+  background-color: #ff4d4f;
+}
+
+li button:hover {
+  background-color: #d9363e;
+}
+
+.note-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--accent--color);
+  border-radius: 5px;
+  margin: 0 0 0.5rem 0;
+}
+
+#languageSelector {
+  padding: 0.5rem;
+}
+.icon {
+  width: 20px; /* Adjust as needed */
+  height: 20px; /* Adjust as needed */
+}
+
+.habit {
+  background-color: var(--secondary-color);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 0 0 0.5rem 0;
+}
+
+.habit summary {
+  padding: 0 .5rem;
+}
+/* Calendar Styles */
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 20px 0;
+}
+
+.calendar div {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--tertiary-color);
+  border-radius: 4px;
+  background: var(--secondary-color);
+  cursor: pointer;
+}
+
+.calendar .marked {
+  background: green;
+}
+
+.calendar .disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+.todo-item {
+  color: var(--secondary-color);
+}
+
+/* General styling for the custom dropdown */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+/* Styling for the selected item */
+.selected-item {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  outline: none;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  z-index: 1;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Show the dropdown when clicked */
+.dropdown-menu.show {
+  display: block;
+}
+
+/* Style for each item in the dropdown */
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between image and text */
+  border-bottom: 1px solid #ccc;
+}
+
+/* Remove border for the last item */
+.dropdown-menu li:last-child {
+  border-bottom: none;
+}
+
+/* Hover effect for the dropdown items */
+.dropdown-menu li:hover {
+  background-color: #f2f2f2;
+}
+
+/* Styling for the images */
+.icon {
+  width: 20px; /* Adjust size as needed */
+  height: 20px; /* Adjust size as needed */
+  border-radius: 4px; /* Optional: rounded corners */
+}
+
+/* Styling for the text */
+.dropdown-menu li span {
+  flex-grow: 1; /* Ensures text takes available space */
+}
+
+/* Optional: Styling for the selected item after selection */
+.selected-item img {
+  width: 15px; /* Adjust size */
+  height: 15px; /* Adjust size */
+  border-radius: 50%; /* Optional */
+  margin-right: 8px; /* Space between image and text */
+}
+.user-data {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+#habitContainer {
+  height: calc(77vh - 6rem);
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+/* details summary {
+  margin:0 ;
+  transition: margin 250ms ease-in;
+}
+
+details[open] summary {
+  margin: 0 0  10px 0;
+}
+ */
+
+ details {
+  interpolate-size: allow-keywords;
+  
+  &::details-content {
+    transition:
+      block-size 400ms,
+      content-visibility 400ms allow-discrete;
+    overflow: hidden;
+    block-size: 0;     /* Or also:  height:0; */
+  }
+  
+  &[open]::details-content {
+    block-size: auto;  /* Or also:  height:auto; */
+  }
+}
