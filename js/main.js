@@ -24,7 +24,7 @@ db.version(1).stores({
   todos: "++id, userId, content",
   notes: "++id, userId, title, content",
   habits: "++id, userId, habitName, streak, maxStreak, lastModified",
-  translations: "++id, key, translations" // New translations table
+  translations: "++id, key, translations", // New translations table
 });
 
 function isAuthenticated() {
@@ -188,46 +188,46 @@ async function loadPage(path) {
 
     switch (path) {
       case "/":
-        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/login.html");
+        pageContent = await fetchPageContent("./PWA-APP-Better.me/pages/login.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         initializeLoginPage();
         break;
 
       case "/add-todo":
-        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/add-todo.html");
+        pageContent = await fetchPageContent("./PWA-APP-Better.me/pages/add-todo.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         initializeTodoPage();
         break;
 
       case "/add-note":
-        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/add-note.html");
+        pageContent = await fetchPageContent("./PWA-APP-Better.me/pages/add-note.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         initializeNotePage();
         break;
 
       case "/habits":
-        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/habits.html");
+        pageContent = await fetchPageContent("./PWA-APP-Better.me/pages/habits.html");
         main.innerHTML = pageContent;
         initializeHabitsPage();
         break;
 
       case "/user-management":
-        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/user-management.html");
+        pageContent = await fetchPageContent("./PWA-APP-Better.me/pages/user-management.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         initializeUserManagementPage();
         break;
 
       case "/profile":
-        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/profile.html");
+        pageContent = await fetchPageContent("./PWA-APP-Better.me/pages/profile.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         break;
       default:
-        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/404.html");
+        pageContent = await fetchPageContent("./PWA-APP-Better.me/pages/404.html");
         main.innerHTML = pageContent;
     }
   } catch (error) {
@@ -386,34 +386,129 @@ function initializeHabitsPage() {
       event.target.reset();
     });
 
+
+  document.querySelectorAll(".tab-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      // Remove active class from all buttons and tab contents
+      document
+        .querySelectorAll(".tab-button")
+        .forEach((btn) => btn.classList.remove("active"));
+      document
+        .querySelectorAll(".tab-content")
+        .forEach((content) => content.classList.remove("active"));
+
+      // Add active class to clicked button and corresponding tab content
+      button.classList.add("active");
+      document.getElementById(button.dataset.tab).classList.add("active");
+    });
+  });
+
+  // Your existing renderHabits function
   async function renderHabits(userLogged) {
     const habits = await db.habits.where({ userId: userLogged.id }).toArray();
     const habitContainer = document.getElementById("habitContainer");
+    const calendarContainer = document.getElementById("calendarContainer");
     habitContainer.innerHTML = "";
+    calendarContainer.innerHTML = "";
 
     habits.forEach((habit) => {
       const habitDiv = document.createElement("div");
       habitDiv.className = "habit";
       habitDiv.innerHTML = `
-      <details>
-      <summary>${habit.habitName} </summary>
-           <button data-id="${habit.id}" class="delete-habit delete-btn">Delete</button>
-          <div class="calendar" id="calendar-${habit.id}"></div>
-          </details>
+        <details>
+        <summary>${habit.habitName} </summary>
 
-          
+        <button class="update-streak" data-id="${habit.id}" >Update-streak</button>
+            <button data-id="${habit.id}" class="delete-habit delete-btn">Delete</button>
+            <div class="calendar" id="calendar-${habit.id}"></div>
+        </details>
         `;
 
       habitContainer.appendChild(habitDiv);
       renderCalendar(habit, document.getElementById(`calendar-${habit.id}`));
+
+      // Render habit in calendar view
+      const calendarEntry = document.createElement("div");
+      calendarEntry.innerHTML = `
+            <h3>${habit.habitName}</h3>
+            <div class="calendar" id="calendar-view-${habit.id}"></div>
+        `;
+      calendarContainer.appendChild(calendarEntry);
+      renderCalendar(
+        habit,
+        document.getElementById(`calendar-view-${habit.id}`)
+      );
+
+      document.querySelectorAll(".delete-habit").forEach((button) => {
+        button.addEventListener("click", async (event) => {
+          const habitId = parseInt(event.target.dataset.id);
+          await db.habits.delete(habitId);
+          showToast("Habit deleted successfully!");
+          renderHabits(userLogged);
+        });
+      });
+
     });
-    // document.querySelectorAll(".delete-habit").forEach((button)  =>{
-    //   button.addEventListener("click", async (event) => {
-    //     const habitId = parseInt(event.target.dataset.id);
-    //     await db.habits.delete(habitId);
-    //     showToast("Habit deleted successfully!");
-    //     renderHabits(userLogged);
-    // });
+
+    // Render analytics chart
+    renderHabitChart(habits);
+  }
+
+  function renderHabitChart(habits) {
+    const ctx = document.getElementById("habitChart").getContext("2d");
+
+    // Prepare data for chart
+    const labels = habits.map((habit) => habit.habitName);
+    const activeDays = habits.map((habit) => habit.streak.length);
+    const inactiveDays = habits.map((habit) => {
+      const today = new Date();
+      const daysInMonth = new Date(
+        today.getFullYear(),
+        today.getMonth() + 1,
+        0
+      ).getDate();
+      return daysInMonth - habit.streak.length;
+    });
+
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Active Days",
+            data: activeDays,
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+          {
+            label: "Inactive Days",
+            data: inactiveDays,
+            backgroundColor: "rgba(255, 99, 132, 0.6)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: "Habit Activity Overview",
+          },
+        },
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true,
+          },
+        },
+      },
+    });
   }
 
   function renderCalendar(habit, calendarDiv) {
@@ -568,13 +663,13 @@ function setupEventDelegation() {
   });
 }
 
-
-
-document.getElementById("languageSelector").addEventListener("change", (event) => {
-  setLanguage(event.target.value); // Update the app's language
-});
+document
+  .getElementById("languageSelector")
+  .addEventListener("change", (event) => {
+    setLanguage(event.target.value); // Update the app's language
+  });
 // Initialize the application
-document.addEventListener("DOMContentLoaded",async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   initializeApp();
   await initializeTranslations();
   loadPage(window.location.pathname); // Load the initial page
@@ -582,9 +677,7 @@ document.addEventListener("DOMContentLoaded",async () => {
   setupNavigation(); // Setup navigation handling
 });
 
-
 async function initializeTranslations() {
-
   const currentLanguage = localStorage.getItem("language") || "en";
   const existingTranslations = await db.translations.count();
   if (existingTranslations === 0) {
@@ -616,10 +709,13 @@ async function initializeTranslations() {
       },
       {
         key: "todo-title",
-        translations: { en: "add a todo", es: "Añade una tarea", fr: "Ajoute a todo" },
+        translations: {
+          en: "add a todo",
+          es: "Añade una tarea",
+          fr: "Ajoute a todo",
+        },
       },
       {
-        
         key: "todos",
         translations: { en: "Todos", es: "Tareas", fr: "Todos" },
       },
@@ -634,6 +730,10 @@ async function initializeTranslations() {
       {
         key: "profile",
         translations: { en: "Profile", es: "Perfil", fr: "Perfil" },
+      },
+      {
+        key: "user",
+        translations: { en: "Hi: ", es: "Hola: ", fr: "Bonjour: " },
       },
     ]);
   }
@@ -675,7 +775,6 @@ async function getTranslation(key, lang) {
 //     document.querySelector('.dropdown-menu').classList.remove('show');
 //   });
 // });
-
 
 // if ("serviceWorker" in navigator) {
 //   // Register a service worker hosted at the root of the
