@@ -4,5 +4,30 @@
     <input type="text" id="habitName" placeholder="Enter a habit" required>
     <button type="submit">Add Habit</button>
   </form>
-  <div id="habitContainer"></div>
+
+
+  <div class="tabs">
+    <div class="tab-buttons">
+        <button class="tab-button active" data-tab="habits">Habits</button>
+        <button class="tab-button" data-tab="analytics">Analytics</button>
+    </div>
+</div>
+
+<div id="habits" class="tab-content active">
+    <div id="habitContainer"></div>
+</div>
+
+<div id="calendar" class="tab-content">
+    <div id="calendarContainer"></div>
+</div>
+
+<div id="analytics" class="tab-content">
+  <div id="containerChart">
+    <canvas id="habitChart"></canvas>
+
+  </div>
+</div>
+
+
+
 </section>
