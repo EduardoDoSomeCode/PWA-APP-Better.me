@@ -188,46 +188,46 @@ async function loadPage(path) {
 
     switch (path) {
       case "/":
-        pageContent = await fetchPageContent("./pages/login.html");
+        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/login.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         initializeLoginPage();
         break;
 
       case "/add-todo":
-        pageContent = await fetchPageContent("./pages/add-todo.html");
+        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/add-todo.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         initializeTodoPage();
         break;
 
       case "/add-note":
-        pageContent = await fetchPageContent("./pages/add-note.html");
+        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/add-note.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         initializeNotePage();
         break;
 
       case "/habits":
-        pageContent = await fetchPageContent("./pages/habits.html");
+        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/habits.html");
         main.innerHTML = pageContent;
         initializeHabitsPage();
         break;
 
       case "/user-management":
-        pageContent = await fetchPageContent("./pages/user-management.html");
+        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/user-management.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         initializeUserManagementPage();
         break;
 
       case "/profile":
-        pageContent = await fetchPageContent("./pages/profile.html");
+        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/profile.html");
         main.innerHTML = pageContent;
         main.dataset.currentPage = path;
         break;
       default:
-        pageContent = await fetchPageContent("./pages/404.html");
+        pageContent = await fetchPageContent("https://eduardodosomecode.github.io/pages/404.html");
         main.innerHTML = pageContent;
     }
   } catch (error) {
